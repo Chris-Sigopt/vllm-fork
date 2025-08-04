@@ -4,12 +4,13 @@
 from typing import Callable, Optional, Union
 
 import torch
-#from vllm_hpu_extension.scales import ConvertScaleToHwAligned
+from vllm.platforms import current_platform
+if current_platform.is_hpu():
+    from vllm_hpu_extension.scales import ConvertScaleToHwAligned
 
 from vllm import _custom_ops as ops
 from vllm import envs
 from vllm.config import CompilationLevel, get_current_vllm_config
-from vllm.platforms import current_platform
 
 # Input scaling factors are no longer optional in _scaled_mm starting
 # from pytorch 2.5. Allocating a dummy tensor to pass as input_scale
