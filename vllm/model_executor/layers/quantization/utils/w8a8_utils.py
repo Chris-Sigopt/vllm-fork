@@ -4,7 +4,6 @@
 from typing import Callable, Optional, Union
 
 import torch
-from vllm_hpu_extension.scales import ConvertScaleToHwAligned
 
 from vllm import _custom_ops as ops
 from vllm import envs
@@ -16,8 +15,11 @@ from vllm.platforms import current_platform
 TORCH_DEVICE_IDENTITY = None
 
 if current_platform.is_hpu():
+    # isort: off
     import habana_frameworks.torch.utils.experimental as htexp
     from vllm_hpu_extension.ops import scaled_fp8_quant
+    from vllm_hpu_extension.scales import ConvertScaleToHwAligned
+    # isort: on
     ops.scaled_fp8_quant = scaled_fp8_quant
 # The condition to determine if it is on a platform that supports
 # torch._scaled_mm rowwise feature.
